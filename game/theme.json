@@ -1,0 +1,19 @@
+{
+  "@menu_buttons": {
+    "misc": {
+      "shape": "rounded_rectangle",
+      "border_width": "5"
+    },
+    "colours": {
+      "normal_bg": "#E0BFB8",
+      "hovered_bg": "#F8C8DC",
+      "active_bg": "#FF69B4",
+      "normal_text": "#811331",
+      "hovered_text": "#AA336A",
+      "active_text": "#9F2B68",
+      "normal_border": "#811331",
+      "hovered_border": "#AA336A",
+      "active_border": "#9F2B68"
+    }
+  }
+}
