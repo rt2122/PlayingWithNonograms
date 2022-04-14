@@ -2,21 +2,22 @@ import pygame_gui
 import pygame
 
 from button import MenuButton
+from typing import List
+
 
 class Page:
-    def __init__(self, buttons, active=False):
+    def __init__(self, buttons: List[MenuButton], active=False):
         self.buttons = buttons
         if not active:
             self.hide_all()
 
-    def hide_all(self):
+    def hide_all(self) -> None:
         for button in self.buttons:
             button.hide()
-    def show_all(self):
+
+    def show_all(self) -> None:
         for button in self.buttons:
             button.show()
-
-
 
 
 class TestApp:
@@ -33,11 +34,10 @@ class TestApp:
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-
-        page1 = Page([MenuButton(100, "Start Game", self.manager, "page2"), 
-            MenuButton(150, "Exit", self.manager, "exit")], active=True) 
+        page1 = Page([MenuButton(100, "Start Game", self.manager, "page2"),
+                     MenuButton(150, "Exit", self.manager, "exit")], active=True)
         page2 = Page([MenuButton(200, "Something will be here", self.manager, "page1")])
-        self.pages = {"page1" : page1, "page2" : page2}
+        self.pages = {"page1": page1, "page2": page2}
         self.page_display = page1
 
     def open_new_page(self, page_link: str):
@@ -45,7 +45,7 @@ class TestApp:
             return
         if page_link == "exit":
             self.is_running = False
-            return 
+            return
         self.page_display.hide_all()
         self.page_display = self.pages[page_link]
         self.page_display.show_all()
