@@ -2,6 +2,7 @@ import pygame_gui
 import pygame
 import numpy as np
 from typing import Tuple
+from proc import GameProcessor
 
 
 class Renderer:
@@ -121,9 +122,11 @@ class TestApp:
                              [0, 3,-1,-1,-1,-2,-2,-2], # noqa E231
                              [0, 1,-2,-1,-2,-2,-2,-2]]).T # noqa E231
         step = 60
+        left = top = 100
         self.rend = Renderer(self.window_surface,
-                             pygame.Rect(100, 100, self.matr.shape[0] * step,
+                             pygame.Rect(left, top, self.matr.shape[0] * step,
                                          self.matr.shape[1] * step), self.matr.shape)
+        self.proc = GameProcessor(self.matr, left, top, step)
 
     def run(self):
         while self.is_running:
@@ -131,6 +134,9 @@ class TestApp:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if cell := self.proc.click(*event.pos):
+                        self.matr = self.proc.change_cell(*cell, event.button)
             self.manager.update(time_delta)
 
             self.window_surface.blit(self.background, (0, 0))
