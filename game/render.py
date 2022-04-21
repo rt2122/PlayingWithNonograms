@@ -1,8 +1,6 @@
-import pygame_gui
 import pygame
 import numpy as np
 from typing import Tuple
-from proc import GameProcessor
 
 
 class Renderer:
@@ -32,6 +30,13 @@ class Renderer:
         self.printer = pygame.font.SysFont('Comic Sans MS', self.y_step)
 
         self.line_width = 5
+        self.active = True
+
+    def hide(self):
+        self.active = False
+
+    def show(self):
+        self.active = True
 
     def get_cell_rect(self, i: int, j: int) -> pygame.Rect:
         """
@@ -45,6 +50,10 @@ class Renderer:
         """
         Render given matrix.
         """
+
+        if not self.active:
+            return
+
         # Draw background
         pygame.draw.rect(self.surface, self.bkg_color, self.bkg_rect)
         # Draw field
@@ -96,56 +105,3 @@ class Renderer:
             start = (start_cell.top, start_cell.left)
             end = (end_cell.top, end_cell.left)
             pygame.draw.line(self.surface, self.line_color, start, end, width=self.line_width)
-
-
-class TestApp:
-    def __init__(self, window_size: Tuple[int]):
-        pygame.init()
-        pygame.display.set_caption('PWN')
-        self.window_surface = pygame.display.set_mode(window_size)
-
-        self.background = pygame.Surface(window_size)
-        self.background.fill(pygame.Color('#15438c'))
-        self.manager = pygame_gui.UIManager(window_size, "./theme.json")
-
-        self.clock = pygame.time.Clock()
-        self.is_running = True
-
-        self.matr = np.array([[0, 0, 0, 0, 0, 0, 1, 0],
-                             [0, 0, 1, 3, 7, 1, 1, 1],
-                             [0, 1,-2,-2,-1,-2,-2,-2], # noqa E231 
-                             [0, 2,-2,-2,-1,-1,-2,-2], # noqa E231
-                             [1, 1,-2,-2,-1,-2,-1,-2], # noqa E231
-                             [1, 1,-2,-2,-1,-2,-2,-1], # noqa E231
-                             [1, 1,-2,-2,-1,-2,-1,-2], # noqa E231
-                             [0, 2,-2,-1,-1,-2,-2,-2], # noqa E231
-                             [0, 3,-1,-1,-1,-2,-2,-2], # noqa E231
-                             [0, 1,-2,-1,-2,-2,-2,-2]]).T # noqa E231
-        step = 60
-        left = top = 100
-        self.rend = Renderer(self.window_surface,
-                             pygame.Rect(left, top, self.matr.shape[0] * step,
-                                         self.matr.shape[1] * step), self.matr.shape)
-        self.proc = GameProcessor(self.matr, left, top, step)
-
-    def run(self):
-        while self.is_running:
-            time_delta = self.clock.tick(60) / 1000.0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if cell := self.proc.click(*event.pos):
-                        self.matr = self.proc.change_cell(*cell, event.button)
-            self.manager.update(time_delta)
-
-            self.window_surface.blit(self.background, (0, 0))
-            self.manager.draw_ui(self.window_surface)
-            self.rend.render(self.matr)
-
-            pygame.display.update()
-
-
-if __name__ == '__main__':
-    app = TestApp(window_size=(1200, 720))
-    app.run()

@@ -1,42 +1,38 @@
-import pygame_gui
+import numpy as np
 import pygame
-
+import pygame_gui
+from typing import Tuple
+from proc import GameProcessor
+from render import Renderer
+from screen import Page
 from button import MenuButton
-from typing import List
-
-
-class Page:
-    def __init__(self, buttons: List, active=False):
-        self.buttons = buttons
-        if not active:
-            self.hide_all()
-
-    def hide_all(self) -> None:
-        for button in self.buttons:
-            button.hide()
-
-    def show_all(self) -> None:
-        for button in self.buttons:
-            button.show()
 
 
 class TestApp:
-    def __init__(self):
+    def __init__(self, window_size: Tuple[int]):
         pygame.init()
-
         pygame.display.set_caption('PWN')
-        self.window_surface = pygame.display.set_mode((800, 600))
+        self.window_surface = pygame.display.set_mode(window_size)
 
-        self.background = pygame.Surface((800, 600))
+        self.background = pygame.Surface(window_size)
         self.background.fill(pygame.Color('#15438c'))
-        self.manager = pygame_gui.UIManager((800, 600), "./theme.json")
+        self.manager = pygame_gui.UIManager(window_size, "./theme.json")
 
         self.clock = pygame.time.Clock()
         self.is_running = True
 
+        self.matr = np.load('../ngrams/test.npy')
+        step = 60
+        left = top = 100
+        self.rend = Renderer(self.window_surface,
+                             pygame.Rect(left, top, self.matr.shape[0] * step,
+                                         self.matr.shape[1] * step), self.matr.shape)
+        self.proc = GameProcessor(self.matr, left, top, step)
+        self.rend.hide()
+
         page1 = Page([MenuButton(100, "Start Game", self.manager, "page2"),
                      MenuButton(150, "Exit", self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(200, "Something will be here", self.manager, "page1")])
+        page2 = Page([MenuButton(10, "Back to menu", self.manager, "page1"), self.rend])
         self.pages = {"page1": page1, "page2": page2}
         self.page_display = page1
 
@@ -51,8 +47,13 @@ class TestApp:
         self.page_display.show_all()
 
     def process_event(self, event):
-        handled = self.manager.process_events(event)
+        if self.rend.active:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if cell := self.proc.click(*event.pos):
+                    self.matr = self.proc.change_cell(*cell, event.button)
+                    return True
 
+        handled = self.manager.process_events(event)
         if (event.type == pygame_gui.UI_BUTTON_PRESSED):
             for button in self.page_display.buttons:
                 if event.ui_element == button:
@@ -67,17 +68,17 @@ class TestApp:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.is_running = False
-
                 self.process_event(event)
 
             self.manager.update(time_delta)
 
             self.window_surface.blit(self.background, (0, 0))
             self.manager.draw_ui(self.window_surface)
+            self.rend.render(self.matr)
 
             pygame.display.update()
 
 
 if __name__ == '__main__':
-    app = TestApp()
+    app = TestApp(window_size=(1200, 720))
     app.run()
