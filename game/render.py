@@ -5,14 +5,19 @@ from typing import Tuple
 
 class Renderer:
     """
-    -1  ==  Black square
-    -2  ==  X
-    -3  ==  White square
+    Class that renders given nonogram matrix.
+
+    :param surface: Where to render.
+    :type surface: pygame.Surface
+    :param bkg_rect: Rectangle, in which matrix will be inscribed.
+    :type bkg_rect: pygame.Rect
+    :param matr_shape: Shape of the nonogram matrix (including hints).
+    :type matr_shape: Tuple[int]
     """
+
     def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int]):
         """
-        Initialize Renderer object. bkg_rect - rectangle, in which all picture will be inscribed.
-        matr_shape - shape of the matrix (including hint numbers).
+        Constructor.
         """
         self.surface = surface
         self.bkg_color = pygame.Color("#93c28a")
@@ -33,24 +38,41 @@ class Renderer:
         self.active = True
 
     def hide(self):
+        """
+        Make renderer inactive.
+        """
         self.active = False
 
     def show(self):
+        """
+        Make renderer active.
+        """
         self.active = True
 
     def get_cell_rect(self, i: int, j: int) -> pygame.Rect:
-        """
-        Get pygame.Rect object for matr[i,j].
+        """ Get rectangle for cell by its coordinates.
+
+        :param i: Row index.
+        :type i: int
+        :param j: Columns index.
+        :type j: int
+        :rtype: pygame.Rect
         """
         left = self.bkg_rect.left + i * self.x_step
         top = self.bkg_rect.top + j * self.y_step
         return pygame.Rect(left, top, self.x_step, self.y_step)
 
     def render(self, matr: np.ndarray) -> None:
-        """
-        Render given matrix.
-        """
+        """ Render matrix. If number is < 0, then it means:
 
+        - -1 Black square
+        - -2 X
+        - -3 White square
+
+        :param matr: Given matrix.
+        :type matr: np.ndarray
+        :rtype: None
+        """
         if not self.active:
             return
 
