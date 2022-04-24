@@ -14,6 +14,7 @@ Welcome to PlayingWithNonograms's documentation!
    proc
    render
    screen
+   ngram
 
 Indices and tables
 ==================
