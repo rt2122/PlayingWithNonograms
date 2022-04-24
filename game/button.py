@@ -15,8 +15,8 @@ class MenuButton(pygame_gui.elements.UIButton):
     :param next_page: page to show after this button is pressed
     :type next_page: str
     """
-    def __init__(self, top: int, text: str, manager: pygame_gui.UIManager, next_page: str) -> None:
-        super().__init__(relative_rect=pygame.Rect((350, top), (100, 50)),
+    def __init__(self, top: int, left: int, text: str, manager: pygame_gui.UIManager, next_page: str) -> None:
+        super().__init__(relative_rect=pygame.Rect((left, top), (150, 50)),
                          text=text, manager=manager,
                          object_id=pygame_gui.core.ObjectID(class_id='@menu_buttons'))
         self.next_page = next_page
