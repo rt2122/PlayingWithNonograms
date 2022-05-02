@@ -1,9 +1,10 @@
 import pygame
 import pygame_gui
+import os
 from typing import Tuple
 from proc import GameProcessor
 from render import Renderer
-from screen import Page
+from screen import Page, ChoosingWindow
 from button import MenuButton
 from ngram import Nonogram
 
@@ -12,6 +13,7 @@ class TestApp:
     def __init__(self, window_size: Tuple[int]):
         pygame.init()
         pygame.display.set_caption('PWN')
+        self.window_size = window_size
         self.window_surface = pygame.display.set_mode(window_size)
 
         self.background = pygame.Surface(window_size)
@@ -21,7 +23,18 @@ class TestApp:
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-        self.ngram = Nonogram('../ngrams/test.npy')
+        self.ngram_path = '../ngrams'
+        self.load_ngram('../ngrams/test.npy')
+
+        page1 = Page([MenuButton(100, 100, "Start Game", self.manager, "choose"),
+                     MenuButton(150, 100, "Exit", self.manager, "exit")], active=True)
+        page2 = Page([MenuButton(10, 100, "Back to menu", self.manager, "page1"),
+                      MenuButton(10, 300, "Check", self.manager, "check"), self.rend])
+        self.pages = {"page1": page1, "page2": page2}
+        self.page_display = page1
+
+    def load_ngram(self, path: str, reload_pages: bool = False):
+        self.ngram = Nonogram(path)
         step = 60
         left = top = 100
         self.rend = Renderer(self.window_surface,
@@ -30,15 +43,10 @@ class TestApp:
                              self.ngram.current_matr.shape)
         self.proc = GameProcessor(self.ngram.current_matr, left, top, step)
         self.rend.hide()
+        if reload_pages:
+            self.pages['page2'].buttons[-1] = self.rend
 
-        page1 = Page([MenuButton(100, 100, "Start Game", self.manager, "page2"),
-                     MenuButton(150, 100, "Exit", self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(10, 100, "Back to menu", self.manager, "page1"),
-                      MenuButton(10, 300, "Check", self.manager, "check"), self.rend])
-        self.pages = {"page1": page1, "page2": page2}
-        self.page_display = page1
-
-    def open_new_page(self, page_link: str):
+    def open_new_page(self, page_link: str) -> None:
         if page_link is None:
             return
         if page_link == "exit":
@@ -49,6 +57,18 @@ class TestApp:
                 page_link = "page1"
             else:
                 return
+        if page_link == "choose":
+            window_size = self.window_size
+            window_size = [k - 200 for k in window_size]
+            w = ChoosingWindow(pygame.Rect((50, 50), window_size), self.manager)
+            self.page_display.append(w.button_go)
+            self.page_display.append(w)
+            return
+
+        if page_link == "page2":
+            selected = self.page_display.buttons[-1].drop_down_menu.selected_option
+            self.load_ngram(os.path.join(self.ngram_path, selected), True)
+
         self.page_display.hide_all()
         self.page_display = self.pages[page_link]
         self.page_display.show_all()
