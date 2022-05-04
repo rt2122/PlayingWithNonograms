@@ -39,6 +39,32 @@ class ChoosingWindow(UIWindow):
 
         self.set_blocking(True)
 
+class CheckResultWindow(UIWindow):
+    """ Window that appears after pressing \"check\" button and shows the result.
+
+    :param win: if the user won or not
+    :type win: bool
+    :param rect: Rectangle in which window would be inscribed.
+    :type rect: pygame.Rect
+    :param manager: UIManager for window.
+    :type manager: pygame_gui.UIManager
+    """
+    def __init__(self, win: bool, rect: pygame.Rect, manager: pygame_gui.UIManager) -> None:
+        """
+        Constructor.
+        """
+        super().__init__(rect, manager, "", object_id='#scaling_window', resizable=False)
+
+        text = "YOU WON" if win else "YOU LOST"
+        btn_text = "To main menu" if win else "Back to puzzle"
+        print(rect.height, rect.width)
+
+        self.text = UILabel(pygame.Rect((50, 50), (200, 50)), text, manager, container=self)
+        if win: 
+            self.button = GoButton(50, 100, btn_text, manager, "page1_won", self)
+
+        self.set_blocking(True)
+
 
 class Page:
     """
