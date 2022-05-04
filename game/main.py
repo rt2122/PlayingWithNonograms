@@ -27,9 +27,9 @@ class TestApp:
         self.load_ngram('../ngrams/test.npy')
 
         page1 = Page([MenuButton(100, 100, "Start Game", self.manager, "choose"),
-                     MenuButton(150, 100, "Exit", self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(10, 100, "Back to menu", self.manager, "page1"),
-                      MenuButton(10, 300, "Check", self.manager, "check"), self.rend])
+                     MenuButton(100, 150, "Exit", self.manager, "exit")], active=True)
+        page2 = Page([MenuButton(100, 10, "Back to menu", self.manager, "page1"),
+                      MenuButton(300, 10, "Check", self.manager, "check"), self.rend])
         self.pages = {"page1": page1, "page2": page2}
         self.page_display = page1
 
