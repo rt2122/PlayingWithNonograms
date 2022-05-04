@@ -16,7 +16,7 @@ class ChoosingWindow(UIWindow):
     :type ui_manager: pygame_gui.UIManager
     """
 
-    def __init__(self, rect: pygame.Rect, ui_manager: pygame_gui.UIManager):
+    def __init__(self, rect: pygame.Rect, ui_manager: pygame_gui.UIManager) -> None:
         """
         Constructor.
         """
@@ -37,6 +37,7 @@ class ChoosingWindow(UIWindow):
         self.button_go = GoButton(50, 50, "Go!", ui_manager, "page2", self)
 
         self.set_blocking(True)
+
 
 class CheckResultWindow(UIWindow):
     """ Window that appears after pressing \"check\" button and shows the result.
@@ -59,7 +60,7 @@ class CheckResultWindow(UIWindow):
         print(rect.height, rect.width)
 
         self.text = UILabel(pygame.Rect((50, 50), (200, 50)), text, manager, container=self)
-        if win: 
+        if win:
             self.button = GoButton(50, 100, btn_text, manager, "page1_won", self)
 
         self.set_blocking(True)
@@ -75,7 +76,7 @@ class Page:
     :type active: bool
     """
 
-    def __init__(self, buttons: List, active: bool = False):
+    def __init__(self, buttons: List, active: bool = False) -> None:
         """
         Constructor.
         """
@@ -83,7 +84,7 @@ class Page:
         if not active:
             self.hide_all()
 
-    def append(self, new_obj):
+    def append(self, new_obj) -> None:
         """append.
 
         :param new_obj: Object to add to list of components of this page.
