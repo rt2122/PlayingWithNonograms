@@ -17,7 +17,7 @@ class TestApp:
         self.window_surface = pygame.display.set_mode(window_size)
 
         self.background = pygame.Surface(window_size)
-        self.background.fill(pygame.Color('#15438c'))
+        self.background.fill(pygame.Color('#4B88A2'))
         self.manager = pygame_gui.UIManager(window_size, "./theme.json")
 
         self.clock = pygame.time.Clock()
@@ -37,8 +37,11 @@ class TestApp:
         self.ngram = Nonogram(path)
         step = 60
         left = top = 100
-        self.rend = Renderer(self.window_surface,
-                             pygame.Rect(left, top, self.ngram.current_matr.shape[0] * step,
+        self.rend_sf = pygame.Surface((self.ngram.current_matr.shape[0] * step + 10,
+                                         self.ngram.current_matr.shape[1] * step + 10))
+        self.rend_sf.fill(pygame.Color('#4B88A2'))
+        self.rend = Renderer(self.rend_sf,
+                             pygame.Rect(5, 5, self.ngram.current_matr.shape[0] * step,
                                          self.ngram.current_matr.shape[1] * step),
                              self.ngram.current_matr.shape)
         self.proc = GameProcessor(self.ngram.current_matr, left, top, step)
@@ -100,6 +103,8 @@ class TestApp:
             self.manager.update(time_delta)
 
             self.window_surface.blit(self.background, (0, 0))
+            if self.rend.active:
+                self.window_surface.blit(self.rend_sf, (95, 95))
             self.manager.draw_ui(self.window_surface)
             self.rend.render(self.ngram.current_matr)
 
