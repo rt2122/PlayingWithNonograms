@@ -2,8 +2,7 @@ from typing import List
 import os
 import pygame
 import pygame_gui
-from pygame_gui.elements import UIWindow
-from pygame_gui.elements import UIDropDownMenu
+from pygame_gui.elements import UIWindow, UIDropDownMenu, UILabel
 from button import GoButton
 
 
