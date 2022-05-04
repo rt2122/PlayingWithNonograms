@@ -73,8 +73,6 @@ class Renderer:
         :type matr: np.ndarray
         :rtype: None
         """
-        if not self.active:
-            return
 
         # Draw background
         pygame.draw.rect(self.surface, self.bkg_color, self.bkg_rect)
