@@ -1,19 +1,48 @@
 {
-  "@menu_buttons": {
+  "button": {
     "misc": {
       "shape": "rounded_rectangle",
       "border_width": "5"
     },
     "colours": {
-      "normal_bg": "#E0BFB8",
-      "hovered_bg": "#F8C8DC",
-      "active_bg": "#FF69B4",
-      "normal_text": "#811331",
-      "hovered_text": "#AA336A",
-      "active_text": "#9F2B68",
-      "normal_border": "#811331",
-      "hovered_border": "#AA336A",
-      "active_border": "#9F2B68"
+      "normal_bg": "#E7C6C6",
+      "hovered_bg": "#DAA9AA",
+      "active_bg": "#C27072",
+      "normal_text": "#C36F6F",
+      "hovered_text": "#B65455",
+      "active_text": "#9D4345",
+      "normal_border": "#C36F6F",
+      "hovered_border": "#B65455",
+      "active_border": "#9D4345"
+    }
+  },
+  "window": {
+    "colours": {
+      "dark_bg": "#813636",
+      "normal_border": "#7d7d7d"
+    }
+  },
+  "text_box": {
+    "colours": {
+      "dark_bg": "#813636"
+    },
+    "misc": {
+      "border_width": "0"
+    }
+  },
+  "drop_down_menu": {
+    "misc": {
+      "expand_direction": "down"
+    },
+    "colours": {
+      "normal_bg": "#813636",
+      "hovered_bg": "#B65455"
+    }
+  },
+  "drop_down_menu.#selected_option": {
+    "misc": {
+      "border_width": "1",
+      "open_button_width": "10"
     }
   }
 }
