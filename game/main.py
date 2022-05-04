@@ -4,7 +4,7 @@ import os
 from typing import Tuple
 from proc import GameProcessor
 from render import Renderer
-from screen import Page, ChoosingWindow
+from screen import Page, ChoosingWindow, CheckResultWindow
 from button import MenuButton
 from ngram import Nonogram
 
@@ -38,7 +38,7 @@ class TestApp:
         step = 60
         left = top = 100
         self.rend_sf = pygame.Surface((self.ngram.current_matr.shape[0] * step + 10,
-                                         self.ngram.current_matr.shape[1] * step + 10))
+                                       self.ngram.current_matr.shape[1] * step + 10))
         self.rend_sf.fill(pygame.Color('#4B88A2'))
         self.rend = Renderer(self.rend_sf,
                              pygame.Rect(5, 5, self.ngram.current_matr.shape[0] * step,
@@ -56,10 +56,13 @@ class TestApp:
             self.is_running = False
             return
         if page_link == "check":
-            if self.ngram.check():
-                page_link = "page1"
-            else:
-                return
+            window_size = (260, 300)
+            win = self.ngram.check()
+            w = CheckResultWindow(win, pygame.Rect((50, 50), window_size), self.manager)
+            if win:
+                self.page_display.append(w.button)
+            self.page_display.append(w)
+            return
         if page_link == "choose":
             window_size = self.window_size
             window_size = [k - 200 for k in window_size]
@@ -69,8 +72,15 @@ class TestApp:
             return
 
         if page_link == "page2":
-            selected = self.page_display.buttons[-1].drop_down_menu.selected_option
+            w = self.page_display.buttons[-1]
+            selected = w.drop_down_menu.selected_option
+            w.kill()
             self.load_ngram(os.path.join(self.ngram_path, selected), True)
+
+        if page_link == "page1_won":
+            page_link = "page1"
+            self.page_display.buttons[-1].kill()
+            self.rend.hide()
 
         self.page_display.hide_all()
         self.page_display = self.pages[page_link]
