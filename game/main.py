@@ -4,7 +4,7 @@ import os
 from typing import Tuple
 from proc import GameProcessor
 from render import Renderer
-from screen import Page, ChoosingWindow
+from screen import Page, ChoosingWindow, CheckResultWindow
 from button import MenuButton
 from ngram import Nonogram
 
@@ -17,7 +17,7 @@ class TestApp:
         self.window_surface = pygame.display.set_mode(window_size)
 
         self.background = pygame.Surface(window_size)
-        self.background.fill(pygame.Color('#15438c'))
+        self.background.fill(pygame.Color('#4B88A2'))
         self.manager = pygame_gui.UIManager(window_size, "./theme.json")
 
         self.clock = pygame.time.Clock()
@@ -27,9 +27,9 @@ class TestApp:
         self.load_ngram('../ngrams/test.npy')
 
         page1 = Page([MenuButton(100, 100, "Start Game", self.manager, "choose"),
-                     MenuButton(150, 100, "Exit", self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(10, 100, "Back to menu", self.manager, "page1"),
-                      MenuButton(10, 300, "Check", self.manager, "check"), self.rend])
+                     MenuButton(100, 150, "Exit", self.manager, "exit")], active=True)
+        page2 = Page([MenuButton(100, 10, "Back to menu", self.manager, "page1"),
+                      MenuButton(300, 10, "Check", self.manager, "check"), self.rend])
         self.pages = {"page1": page1, "page2": page2}
         self.page_display = page1
 
@@ -37,8 +37,11 @@ class TestApp:
         self.ngram = Nonogram(path)
         step = 60
         left = top = 100
-        self.rend = Renderer(self.window_surface,
-                             pygame.Rect(left, top, self.ngram.current_matr.shape[0] * step,
+        self.rend_sf = pygame.Surface((self.ngram.current_matr.shape[0] * step + 10,
+                                       self.ngram.current_matr.shape[1] * step + 10))
+        self.rend_sf.fill(pygame.Color('#4B88A2'))
+        self.rend = Renderer(self.rend_sf,
+                             pygame.Rect(5, 5, self.ngram.current_matr.shape[0] * step,
                                          self.ngram.current_matr.shape[1] * step),
                              self.ngram.current_matr.shape)
         self.proc = GameProcessor(self.ngram.current_matr, left, top, step)
@@ -53,10 +56,13 @@ class TestApp:
             self.is_running = False
             return
         if page_link == "check":
-            if self.ngram.check():
-                page_link = "page1"
-            else:
-                return
+            window_size = (260, 300)
+            win = self.ngram.check()
+            w = CheckResultWindow(win, pygame.Rect((50, 50), window_size), self.manager)
+            if win:
+                self.page_display.append(w.button)
+            self.page_display.append(w)
+            return
         if page_link == "choose":
             window_size = self.window_size
             window_size = [k - 200 for k in window_size]
@@ -66,8 +72,15 @@ class TestApp:
             return
 
         if page_link == "page2":
-            selected = self.page_display.buttons[-1].drop_down_menu.selected_option
+            w = self.page_display.buttons[-1]
+            selected = w.drop_down_menu.selected_option
+            w.kill()
             self.load_ngram(os.path.join(self.ngram_path, selected), True)
+
+        if page_link == "page1_won":
+            page_link = "page1"
+            self.page_display.buttons[-1].kill()
+            self.rend.hide()
 
         self.page_display.hide_all()
         self.page_display = self.pages[page_link]
@@ -100,6 +113,8 @@ class TestApp:
             self.manager.update(time_delta)
 
             self.window_surface.blit(self.background, (0, 0))
+            if self.rend.active:
+                self.window_surface.blit(self.rend_sf, (95, 95))
             self.manager.draw_ui(self.window_surface)
             self.rend.render(self.ngram.current_matr)
 
