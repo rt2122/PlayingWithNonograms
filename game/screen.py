@@ -3,7 +3,7 @@ import os
 import pygame
 import pygame_gui
 from pygame_gui.elements import UIWindow, UIDropDownMenu, UILabel
-from button import GoButton
+from button import MenuButton
 
 
 class ChoosingWindow(UIWindow):
@@ -34,7 +34,7 @@ class ChoosingWindow(UIWindow):
                                              pygame.Rect((int(self.rect.width / 2),
                                                           int(self.rect.height * 0.3)), (200, 25)),
                                              self.ui_manager, container=self)
-        self.button_go = GoButton(50, 50, "Go!", ui_manager, "page2", self)
+        self.button_go = MenuButton(50, 50, "Go!", ui_manager, "go", self)
 
         self.set_blocking(True)
 
@@ -57,11 +57,10 @@ class CheckResultWindow(UIWindow):
 
         text = "YOU WON" if win else "YOU LOST"
         btn_text = "To main menu" if win else "Back to puzzle"
-        print(rect.height, rect.width)
 
         self.text = UILabel(pygame.Rect((50, 50), (200, 50)), text, manager, container=self)
         if win:
-            self.button = GoButton(50, 100, btn_text, manager, "page1_won", self)
+            self.button = MenuButton(50, 100, btn_text, manager, "page1_won", self)
 
         self.set_blocking(True)
 

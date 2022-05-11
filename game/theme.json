@@ -44,5 +44,17 @@
       "border_width": "1",
       "open_button_width": "10"
     }
+  },
+
+  "#progress_bar":
+  {
+      "colours": {
+          "filled_bar": "#D0E0FF,#90A0B0,-90",
+          "unfilled_bar": "#606060"
+      },
+      "misc": {
+          "shape": "rounded_rectangle",
+          "shape_corner_radius": "12"
+      }
   }
 }
