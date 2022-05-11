@@ -11,6 +11,7 @@ class Nonogram:
         self.correct_matr = np.load(matr_path)
         self.current_matr = self.correct_matr.copy()
         self.current_matr[self.correct_matr < 0] = -3
+        self.size = np.count_nonzero(self.correct_matr == -1)
 
     def change_matr(self, new_matr: np.ndarray) -> None:
         """Replace current matrix with a new one.
@@ -29,3 +30,11 @@ class Nonogram:
         :rtype: bool
         """
         return np.equal(self.current_matr == -1, self.correct_matr == -1).all()
+
+    def progress(self) -> float:
+        """Get the progress.
+
+        :rtype: float
+        """
+        match = np.count_nonzero(np.logical_and(self.current_matr == -1, self.correct_matr == -1))
+        return match / self.size
