@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 import numpy as np
 from typing import Tuple
 
@@ -13,18 +14,20 @@ class Renderer:
     :type bkg_rect: pygame.Rect
     :param matr_shape: Shape of the nonogram matrix (including hints).
     :type matr_shape: Tuple[int]
+    :param manager: Manager (to get colours).
+    :type pygame_gui.UIManager
     """
 
-    def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int]):
+    def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int],
+                 manager: pygame_gui.UIManager):
         """
         Constructor.
         """
         self.surface = surface
-        self.bkg_color = pygame.Color("#93c28a")
-        self.field_color = pygame.Color("#dbc26e")
-        self.line_color = pygame.Color("#000000")
-        self.dark_square_color = pygame.Color("#383838")
-        self.x_color = pygame.Color("#7d7d7d")
+        theme = manager.get_theme()
+        colour_types = ["bkg_color", "field_color", "line_color", "dark_square_color", "x_color"]
+        for ctype in colour_types:
+            self.__setattr__(ctype, theme.get_colour(ctype, ["renderer", "colours"]))
         self.bkg_rect = bkg_rect
         self.matr_shape = matr_shape
 
@@ -34,7 +37,7 @@ class Renderer:
         pygame.font.init()
         self.printer = pygame.font.SysFont('Comic Sans MS', self.y_step)
 
-        self.line_width = 5
+        self.line_width = int(theme.get_misc_data("line_width", ["renderer"]))
         self.active = True
 
     def hide(self):

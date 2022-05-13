@@ -17,8 +17,8 @@ class TestApp:
         self.window_surface = pygame.display.set_mode(window_size)
 
         self.background = pygame.Surface(window_size)
-        self.background.fill(pygame.Color('#4B88A2'))
         self.manager = pygame_gui.UIManager(window_size, "./theme.json")
+        self.background.fill(self.manager.get_theme().get_colour("main", ["background", "colours"]))
 
         self.clock = pygame.time.Clock()
         self.is_running = True
@@ -26,8 +26,8 @@ class TestApp:
         self.ngram_path = '../ngrams'
         self.load_ngram('../ngrams/test.npy')
 
-        page1 = Page([MenuButton(100, 100, "Start Game", self.manager, "choose"),
-                     MenuButton(100, 150, "Exit", self.manager, "exit")], active=True)
+        page1 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] // 2 - 100, "Start Game", self.manager, "choose"),
+                     MenuButton(window_size[0] // 2 - 75, window_size[1] // 2, "Exit", self.manager, "exit")], active=True)
         page2 = Page([MenuButton(100, 10, "Back to menu", self.manager, "page1"),
                       MenuButton(300, 10, "Check", self.manager, "check"), self.rend])
         self.pages = {"page1": page1, "page2": page2}
@@ -39,11 +39,11 @@ class TestApp:
         left = top = 100
         self.rend_sf = pygame.Surface((self.ngram.current_matr.shape[0] * step + 10,
                                        self.ngram.current_matr.shape[1] * step + 10))
-        self.rend_sf.fill(pygame.Color('#4B88A2'))
+        self.rend_sf.fill(self.manager.get_theme().get_colour("main", ["background", "colours"]))
         self.rend = Renderer(self.rend_sf,
                              pygame.Rect(5, 5, self.ngram.current_matr.shape[0] * step,
                                          self.ngram.current_matr.shape[1] * step),
-                             self.ngram.current_matr.shape)
+                             self.ngram.current_matr.shape, self.manager)
         self.proc = GameProcessor(self.ngram.current_matr, left, top, step)
         self.rend.hide()
         if reload_pages:
@@ -64,8 +64,7 @@ class TestApp:
             self.page_display.append(w)
             return
         if page_link == "choose":
-            window_size = self.window_size
-            window_size = [k - 200 for k in window_size]
+            window_size = (700, 500)
             w = ChoosingWindow(pygame.Rect((50, 50), window_size), self.manager)
             self.page_display.append(w.button_go)
             self.page_display.append(w)
@@ -122,5 +121,5 @@ class TestApp:
 
 
 if __name__ == '__main__':
-    app = TestApp(window_size=(1200, 720))
+    app = TestApp(window_size=(1920, 1080))
     app.run()

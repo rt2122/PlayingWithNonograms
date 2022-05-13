@@ -18,8 +18,8 @@
   },
   "window": {
     "colours": {
-      "dark_bg": "#813636",
-      "normal_border": "#7d7d7d"
+      "dark_bg": "#86C4A5",
+      "normal_border": "#1A5939"
     }
   },
   "text_box": {
@@ -55,6 +55,23 @@
       "misc": {
           "shape": "rounded_rectangle",
           "shape_corner_radius": "12"
+      }
+  },
+  "background": {
+    "colours": {
+        "main" : "#4F896C"
+    }
+  }, 
+  "renderer": {
+      "misc": {
+        "line_width" : "5"
+      },
+      "colours": {
+         "bkg_color" :  "#93c28a",
+         "field_color" : "#E1BAAD",
+         "line_color" : "#000000",
+         "dark_square_color" : "#1A5939",
+         "x_color" :  "#7d7d7d"
       }
   }
 }
