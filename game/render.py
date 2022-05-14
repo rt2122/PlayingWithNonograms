@@ -115,16 +115,16 @@ class Renderer:
 
         # Draw grid
         # Vertical lines
-        for i in range(self.matr_shape[0] + 1):
+        for i in range(self.matr_shape[1] + 1):
             start_cell = self.get_cell_rect(0, i)
-            end_cell = self.get_cell_rect(self.matr_shape[1], i)
-            start = (start_cell.top, start_cell.left)
-            end = (end_cell.top, end_cell.left)
+            end_cell = self.get_cell_rect(self.matr_shape[0], i)
+            start = (start_cell.left, start_cell.top)
+            end = (end_cell.left, end_cell.top)
             pygame.draw.line(self.surface, self.line_color, start, end, width=self.line_width)
         # Horizontal lines
-        for i in range(self.matr_shape[1] + 1):
+        for i in range(self.matr_shape[0] + 1):
             start_cell = self.get_cell_rect(i, 0)
-            end_cell = self.get_cell_rect(i, self.matr_shape[0])
-            start = (start_cell.top, start_cell.left)
-            end = (end_cell.top, end_cell.left)
+            end_cell = self.get_cell_rect(i, self.matr_shape[1])
+            start = (start_cell.left, start_cell.top)
+            end = (end_cell.left, end_cell.top)
             pygame.draw.line(self.surface, self.line_color, start, end, width=self.line_width)
