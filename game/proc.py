@@ -19,7 +19,7 @@ class GameProcessor():
         """
         Constructor.
         """
-        self.matr = matrix
+        self.matr = matrix.copy()
         i, j = np.where(matrix < 0)
         i, j = i[0], j[0]
         self.x_idx = range(i, matrix.shape[0])
@@ -44,28 +44,3 @@ class GameProcessor():
         if i in self.x_idx and j in self.y_idx:
             return i, j
         return None
-
-    def change_cell(self, i: int, j: int, button: int) -> np.ndarray:
-        """
-        Change cell with indices [i][j] based on which mouse button was clicked.
-
-        :param i: i index of the cell to change
-        :type i: int
-        :param j: j index of the cell to change
-        :type j: int
-        :param button: mouse button type
-        :type button: int
-        :return: changed matrix
-        :rtype: nd.array
-        """
-        if button == 1:  # left click
-            if self.matr[i][j] == -1:
-                self.matr[i][j] = -3
-            else:
-                self.matr[i][j] = -1
-        elif button == 3:  # right click
-            if self.matr[i][j] == -2:
-                self.matr[i][j] = -3
-            else:
-                self.matr[i][j] = -2
-        return self.matr

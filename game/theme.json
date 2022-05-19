@@ -22,14 +22,6 @@
       "normal_border": "#1A5939"
     }
   },
-  "text_box": {
-    "colours": {
-      "dark_bg": "#813636"
-    },
-    "misc": {
-      "border_width": "0"
-    }
-  },
   "drop_down_menu": {
     "misc": {
       "expand_direction": "down"
@@ -45,16 +37,36 @@
       "open_button_width": "10"
     }
   },
-
-  "#progress_bar":
+  "progress_bar":
+ {
+   "colours": {
+     "filled_bar": "#76a5af",
+     "unfilled_bar": "#f1f6f7",
+     "normal_text": "#1d2719",
+     "text_shadow": "#1d2719"
+   },
+   "misc": {
+     "shape": "rounded_rectangle",
+     "shape_corner_radius": "20",
+     "shadow_width": "0"
+   },
+   "font": {
+     "name": "fira_code",
+     "size": "40",
+     "bold": "0",
+     "italic": "0"
+   }
+ },
+  "#progress_bar_win":
   {
       "colours": {
-          "filled_bar": "#D0E0FF,#90A0B0,-90",
-          "unfilled_bar": "#606060"
-      },
-      "misc": {
-          "shape": "rounded_rectangle",
-          "shape_corner_radius": "12"
+          "filled_bar": "#93c47d"
+      }
+  },
+  "#progress_bar_defeat":
+  {
+      "colours": {
+          "filled_bar": "#ee8881"
       }
   },
   "background": {
