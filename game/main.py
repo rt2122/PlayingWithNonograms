@@ -4,9 +4,10 @@ import os
 from typing import Tuple
 from proc import GameProcessor
 from render import Renderer
-from screen import Page, ChoosingWindow, CheckResultWindow
+from screen import Page, ChoosingWindow
 from button import MenuButton
 from ngram import Nonogram
+from progress_bar import GameProgressBar
 
 
 class TestApp:
@@ -26,16 +27,21 @@ class TestApp:
         self.ngram_path = '../ngrams'
         self.load_ngram('../ngrams/test.npy')
 
+        self.progress_bar = GameProgressBar(pygame.Rect((window_size[0] // 2 - 200, 100), (400, 80)),
+                                            self.manager, None,
+                                            object_id=pygame_gui.core.ObjectID('#progress_bar_normal'))
         page1 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] // 2 - 100,
                                  "Start Game", self.manager, "choose"),
                       MenuButton(window_size[0] // 2 - 75, window_size[1] // 2, "Exit",
                                  self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(window_size[0] // 2 - 100 - 75, 10, "Back to menu", self.manager,
+        page2 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] - 150, "Back to menu",
+                                 self.manager,
                                  "page1"),
-                      MenuButton(window_size[0] // 2 + 100 - 75, 10, "Check", self.manager,
-                                 "check"), self.rend])
+                      self.progress_bar, self.rend])
         self.pages = {"page1": page1, "page2": page2}
         self.page_display = page1
+
+        self.progress_bar.percent_full = 0
 
     def load_ngram(self, path: str, reload_pages: bool = False, step: int = 60):
         self.ngram = Nonogram(path)
@@ -59,14 +65,6 @@ class TestApp:
         if page_link == "exit":
             self.is_running = False
             return
-        if page_link == "check":
-            window_size = (260, 300)
-            win = self.ngram.check()
-            w = CheckResultWindow(win, pygame.Rect((50, 50), window_size), self.manager)
-            if win:
-                self.page_display.append(w.button)
-            self.page_display.append(w)
-            return
         if page_link == "choose":
             window_size = (700, 500)
             w = ChoosingWindow(pygame.Rect((50, 50), window_size), self.manager)
@@ -80,9 +78,9 @@ class TestApp:
             w.kill()
             self.load_ngram(os.path.join(self.ngram_path, selected), True)
 
-        if page_link == "page1_won":
-            page_link = "page1"
-            self.page_display.buttons[-1].kill()
+        if page_link == "page1":
+            self.progress_bar.win = False
+            self.progress_bar.percent_full = 0
             self.rend.hide()
 
         self.page_display.hide_all()
@@ -92,8 +90,22 @@ class TestApp:
     def process_event(self, event):
         if self.rend.active:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if cell := self.proc.click(*event.pos):
-                    self.ngram.change_matr(self.proc.change_cell(*cell, event.button))
+                if (cell := self.proc.click(*event.pos)):
+                    self.ngram.change_matr(*cell, event.button)
+                    progress = self.ngram.progress()
+                    self.progress_bar.percent_full = min(100, progress * 100)
+                    win = self.ngram.check()
+                    if win:
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
+                        ["#progress_bar_win", "colours"])
+                        self.progress_bar.win = True
+                    elif progress >= 1:
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
+                        ["#progress_bar_defeat", "colours"])
+                    else:
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
+                        ["progress_bar", "colours"])
+                    self.progress_bar.redraw()
                     return True
 
         handled = self.manager.process_events(event)

@@ -13,13 +13,27 @@ class Nonogram:
         self.current_matr[self.correct_matr < 0] = -3
         self.size = np.count_nonzero(self.correct_matr == -1)
 
-    def change_matr(self, new_matr: np.ndarray) -> None:
-        """Replace current matrix with a new one.
+    def change_matr(self, i: int, j: int, button: int) -> None:
+        """Change cell depending on button.
 
-        :param new_matr: new matrix
-        :type new_matr: np.ndarray
+        :param i: i index of the cell to change
+        :type i: int
+        :param j: j index of the cell to change
+        :type j: int
+        :param button: mouse button type
+        :type button: int
         """
-        self.current_matr = new_matr
+        if not self.check():
+            if button == 1:  # left click
+                if self.current_matr[i][j] == -1:
+                    self.current_matr[i][j] = -3
+                else:
+                    self.current_matr[i][j] = -1
+            elif button == 3:  # right click
+                if self.current_matr[i][j] == -2:
+                    self.current_matr[i][j] = -3
+                else:
+                    self.current_matr[i][j] = -2
 
     def check(self) -> bool:
         """Check if input matrix is correct.
@@ -36,5 +50,5 @@ class Nonogram:
 
         :rtype: float
         """
-        match = np.count_nonzero(np.logical_and(self.current_matr == -1, self.correct_matr == -1))
+        match = np.count_nonzero(self.current_matr == -1)
         return match / self.size
