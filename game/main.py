@@ -51,10 +51,10 @@ class TestApp:
         top = self.window_size[1] // 2 - ngram_shape[1] // 2 - 100
         self.rend_sf = pygame.Surface(self.window_size)
         self.rend_sf.fill(self.manager.get_theme().get_colour("main", ["background", "colours"]))
+        self.proc = GameProcessor(self.ngram.current_matr, left + 100, top + 100, step)
         self.rend = Renderer(self.rend_sf,
                              pygame.Rect(left, top, *ngram_shape),
-                             self.ngram.current_matr.shape, self.manager)
-        self.proc = GameProcessor(self.ngram.current_matr, left + 100, top + 100, step)
+                             self.ngram.current_matr.shape, self.manager, self.ngram.ngram_idx)
         self.rend.hide()
         if reload_pages:
             self.pages['page2'].buttons[-1] = self.rend

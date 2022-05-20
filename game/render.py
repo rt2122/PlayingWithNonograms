@@ -16,10 +16,12 @@ class Renderer:
     :type matr_shape: Tuple[int]
     :param manager: Manager (to get colours).
     :type pygame_gui.UIManager
+    :param ngram_idx: Indexes of left upper corner of nonogram in the matrix.
+    :type Tuple[int]
     """
 
     def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int],
-                 manager: pygame_gui.UIManager):
+                 manager: pygame_gui.UIManager, ngram_idx: Tuple[int]):
         """
         Constructor.
         """
@@ -39,6 +41,7 @@ class Renderer:
 
         self.line_width = int(theme.get_misc_data("line_width", ["renderer"]))
         self.active = True
+        self.ngram_idx = ngram_idx
 
     def hide(self):
         """
@@ -80,17 +83,16 @@ class Renderer:
         # Draw background
         pygame.draw.rect(self.surface, self.bkg_color, self.bkg_rect)
         # Draw field
-        i, j = np.where(matr < 0)
-        i, j = i[0], j[0]
-        left = self.bkg_rect.left + i * self.x_step
-        top = self.bkg_rect.top + j * self.y_step
-        width = self.bkg_rect.width - i * self.x_step
-        height = self.bkg_rect.height - j * self.y_step
+        ngram_i, ngram_j = self.ngram_idx
+        left = self.bkg_rect.left + ngram_i * self.x_step
+        top = self.bkg_rect.top + ngram_j * self.y_step
+        width = self.bkg_rect.width - ngram_i * self.x_step
+        height = self.bkg_rect.height - ngram_j * self.y_step
         field_rect = pygame.Rect(left, top, width, height)
         pygame.draw.rect(self.surface, self.field_color, field_rect)
 
         corner_rect = pygame.Rect(self.bkg_rect.left, self.bkg_rect.top,
-                                  i * self.x_step, j * self.y_step)
+                                  ngram_i * self.x_step, ngram_j * self.y_step)
         pygame.draw.rect(self.surface, self.x_color, corner_rect)
 
         # Draw numbers, squares and x's
@@ -98,14 +100,18 @@ class Renderer:
             for j in range(self.matr_shape[1]):
                 cell = self.get_cell_rect(i, j)
                 val = matr[i, j]
-                if val > 0:  # Number
+                crossed = False
+                if (i < ngram_j or j < ngram_j) and val != 0:  # Number
+                    crossed = val < 0
+                    val = abs(val)
                     text = self.printer.render(str(val), True, self.line_color)
                     center = (cell.left + cell.right) / 2, (cell.top + cell.bottom) / 2
                     coords = text.get_rect(center=center)
                     self.surface.blit(text, coords)
                 elif val == -1:  # Black square
                     pygame.draw.rect(self.surface, self.dark_square_color, cell)
-                elif val == -2:  # X
+
+                if val == -2 or crossed:  # X
                     pygame.draw.line(self.surface, self.x_color,
                                      (cell.left, cell.top), (cell.right, cell.bottom),
                                      width=self.line_width)

@@ -20,10 +20,6 @@ class GameProcessor():
         Constructor.
         """
         self.matr = matrix.copy()
-        i, j = np.where(matrix < 0)
-        i, j = i[0], j[0]
-        self.x_idx = range(i, matrix.shape[0])
-        self.y_idx = range(j, matrix.shape[1])
         self.step = step
         self.left = left
         self.top = top
@@ -41,6 +37,6 @@ class GameProcessor():
         """
         i = (x - self.left) // self.step
         j = (y - self.top) // self.step
-        if i in self.x_idx and j in self.y_idx:
+        if i in range(self.matr.shape[0]) and j in range(self.matr.shape[1]):
             return i, j
         return None
