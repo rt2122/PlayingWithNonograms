@@ -9,6 +9,13 @@ class Nonogram:
     """
     def __init__(self, matr_path: str) -> None:
         self.correct_matr = np.load(matr_path)
+
+        i, j = np.where(self.correct_matr < 0)
+        i, j = i[0], j[0]
+        self.ngram_idx = (i, j)
+        self.x_idx = range(i, self.correct_matr.shape[0])
+        self.y_idx = range(j, self.correct_matr.shape[1])
+
         self.current_matr = self.correct_matr.copy()
         self.current_matr[self.correct_matr < 0] = -3
         self.size = np.count_nonzero(self.correct_matr == -1)
@@ -24,16 +31,19 @@ class Nonogram:
         :type button: int
         """
         if not self.check():
-            if button == 1:  # left click
-                if self.current_matr[i][j] == -1:
-                    self.current_matr[i][j] = -3
-                else:
-                    self.current_matr[i][j] = -1
-            elif button == 3:  # right click
-                if self.current_matr[i][j] == -2:
-                    self.current_matr[i][j] = -3
-                else:
-                    self.current_matr[i][j] = -2
+            if i in self.x_idx and j in self.y_idx:
+                if button == 1:  # left click
+                    if self.current_matr[i][j] == -1:
+                        self.current_matr[i][j] = -3
+                    else:
+                        self.current_matr[i][j] = -1
+                elif button == 3:  # right click
+                    if self.current_matr[i][j] == -2:
+                        self.current_matr[i][j] = -3
+                    else:
+                        self.current_matr[i][j] = -2
+            else:
+                self.current_matr[i][j] = - self.current_matr[i][j]
 
     def check(self) -> bool:
         """Check if input matrix is correct.
@@ -43,12 +53,14 @@ class Nonogram:
         :return: True if correct, otherwise False
         :rtype: bool
         """
-        return np.equal(self.current_matr == -1, self.correct_matr == -1).all()
+        i, j = self.ngram_idx
+        return np.equal(self.current_matr[i:, j:] == -1, self.correct_matr[i:,j:] == -1).all()
 
     def progress(self) -> float:
         """Get the progress.
 
         :rtype: float
         """
-        match = np.count_nonzero(self.current_matr == -1)
+        i, j = self.ngram_idx
+        match = np.count_nonzero(self.current_matr[i:, j:] == -1)
         return match / self.size
