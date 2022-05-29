@@ -8,12 +8,13 @@ from screen import Page, ChoosingWindow
 from button import MenuButton
 from ngram import Nonogram
 from progress_bar import GameProgressBar
+from tr import _
 
 
 class TestApp:
     def __init__(self, window_size: Tuple[int]):
         pygame.init()
-        pygame.display.set_caption('PWN')
+        pygame.display.set_caption(_("PWN"))
         self.window_size = window_size
         self.window_surface = pygame.display.set_mode(window_size)
 
@@ -24,17 +25,17 @@ class TestApp:
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-        self.ngram_path = '../ngrams'
-        self.load_ngram('../ngrams/test.npy')
+        self.ngram_path = "../ngrams"
+        self.load_ngram("../ngrams/test.npy")
 
-        self.progress_bar = GameProgressBar(pygame.Rect((window_size[0] // 2 - 200, 100), (400, 80)),
-                                            self.manager, None,
-                                            object_id=pygame_gui.core.ObjectID('#progress_bar_normal'))
+        self.progress_bar = GameProgressBar(pygame.Rect((window_size[0] // 2 - 200, 100),
+                                                        (400, 80)), self.manager, None,
+                                    object_id=pygame_gui.core.ObjectID("#progress_bar_normal")) # noqa E128
         page1 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] // 2 - 100,
-                                 "Start Game", self.manager, "choose"),
-                      MenuButton(window_size[0] // 2 - 75, window_size[1] // 2, "Exit",
+                                 _("Start Game"), self.manager, "choose"),
+                      MenuButton(window_size[0] // 2 - 75, window_size[1] // 2, _("Exit"),
                                  self.manager, "exit")], active=True)
-        page2 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] - 150, "Back to menu",
+        page2 = Page([MenuButton(window_size[0] // 2 - 75, window_size[1] - 150, _("Back to menu"),
                                  self.manager,
                                  "page1"),
                       self.progress_bar, self.rend])
@@ -57,7 +58,7 @@ class TestApp:
                              self.ngram.current_matr.shape, self.manager, self.ngram.ngram_idx)
         self.rend.hide()
         if reload_pages:
-            self.pages['page2'].buttons[-1] = self.rend
+            self.pages["page2"].buttons[-1] = self.rend
 
     def open_new_page(self, page_link: str) -> None:
         if page_link is None:
@@ -96,15 +97,15 @@ class TestApp:
                     self.progress_bar.percent_full = min(100, progress * 100)
                     win = self.ngram.check()
                     if win:
-                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
-                        ["#progress_bar_win", "colours"])
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour(
+                                "filled_bar", ["#progress_bar_win", "colours"])
                         self.progress_bar.win = True
                     elif progress >= 1:
-                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
-                        ["#progress_bar_defeat", "colours"])
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour(
+                                "filled_bar", ["#progress_bar_defeat", "colours"])
                     else:
-                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour("filled_bar",
-                        ["progress_bar", "colours"])
+                        self.progress_bar.bar_filled_colour = self.manager.get_theme().get_colour(
+                                "filled_bar", ["progress_bar", "colours"])
                     self.progress_bar.redraw()
                     return True
 
@@ -136,6 +137,6 @@ class TestApp:
             pygame.display.update()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = TestApp(window_size=(1920, 1080))
     app.run()
