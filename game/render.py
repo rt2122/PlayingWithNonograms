@@ -101,7 +101,7 @@ class Renderer:
                 cell = self.get_cell_rect(i, j)
                 val = matr[i, j]
                 crossed = False
-                if (i < ngramii or j < ngram_j) and val != 0:  # Number
+                if (i < ngram_i or j < ngram_j) and val != 0:  # Number
                     crossed = val < 0
                     val = abs(val)
                     text = self.printer.render(str(val), True, self.line_color)
