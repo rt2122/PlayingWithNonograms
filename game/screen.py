@@ -1,3 +1,4 @@
+"""Module for windows."""
 from typing import List
 import os
 import pygame
@@ -8,8 +9,7 @@ from tr import _
 
 
 class ChoosingWindow(UIWindow):
-    """
-    Window with drop down menu which allows to choose nonogram from list.
+    """Window with drop down menu which allows to choose nonogram from list.
 
     :param rect: Rectangle in which window would be inscribed.
     :type rect: pygame.Rect
@@ -18,9 +18,7 @@ class ChoosingWindow(UIWindow):
     """
 
     def __init__(self, rect: pygame.Rect, ui_manager: pygame_gui.UIManager) -> None:
-        """
-        Constructor.
-        """
+        """Initialize."""
         super().__init__(rect, ui_manager,
                          window_display_title=_("Choose Nonogram"),
                          object_id="#scaling_window",
@@ -41,7 +39,7 @@ class ChoosingWindow(UIWindow):
 
 
 class CheckResultWindow(UIWindow):
-    """ Window that appears after pressing \"check\" button and shows the result.
+    r"""Window that appears after pressing \"check\" button and shows the result.
 
     :param win: if the user won or not
     :type win: bool
@@ -50,10 +48,9 @@ class CheckResultWindow(UIWindow):
     :param manager: UIManager for window.
     :type manager: pygame_gui.UIManager
     """
+
     def __init__(self, win: bool, rect: pygame.Rect, manager: pygame_gui.UIManager) -> None:
-        """
-        Constructor.
-        """
+        """Initialize."""
         super().__init__(rect, manager, "", object_id="#scaling_window", resizable=False)
 
         text = _("YOU WON") if win else _("YOU LOST")
@@ -67,8 +64,7 @@ class CheckResultWindow(UIWindow):
 
 
 class Page:
-    """
-    Page class. Contains objects with methods show() and hide().
+    """Page class. Contains objects with methods show() and hide().
 
     :param buttons: Objects of this page.
     :type buttons: List
@@ -77,9 +73,7 @@ class Page:
     """
 
     def __init__(self, buttons: List, active: bool = False) -> None:
-        """
-        Constructor.
-        """
+        """Initialize."""
         self.buttons = buttons
         if not active:
             self.hide_all()
@@ -92,16 +86,16 @@ class Page:
         self.buttons.append(new_obj)
 
     def hide_all(self) -> None:
-        """
-        Disable all objects on the page.
+        """Disable all objects on the page.
+
         :rtype: None
         """
         for button in self.buttons:
             button.hide()
 
     def show_all(self) -> None:
-        """
-        Show all objects on the page.
+        """Show all objects on the page.
+
         :rtype: None
         """
         for button in self.buttons:

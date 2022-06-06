@@ -1,3 +1,4 @@
+"""Module for Renderer class."""
 import pygame
 import pygame_gui
 import numpy as np
@@ -22,9 +23,7 @@ class Renderer:
 
     def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int],
                  manager: pygame_gui.UIManager, ngram_idx: Tuple[int]):
-        """
-        Constructor.
-        """
+        """Initialize."""
         self.surface = surface
         theme = manager.get_theme()
         colour_types = ["bkg_color", "field_color", "line_color", "dark_square_color", "x_color"]
@@ -44,19 +43,15 @@ class Renderer:
         self.ngram_idx = ngram_idx
 
     def hide(self):
-        """
-        Make renderer inactive.
-        """
+        """Make renderer inactive."""
         self.active = False
 
     def show(self):
-        """
-        Make renderer active.
-        """
+        """Make renderer active."""
         self.active = True
 
     def get_cell_rect(self, i: int, j: int) -> pygame.Rect:
-        """ Get rectangle for cell by its coordinates.
+        """Get rectangle for cell by its coordinates.
 
         :param i: Row index.
         :type i: int
@@ -69,7 +64,9 @@ class Renderer:
         return pygame.Rect(left, top, self.x_step, self.y_step)
 
     def render(self, matr: np.ndarray) -> None:
-        """ Render matrix. If number is < 0, then it means:
+        """Render matrix.
+
+        If number is < 0, then it means:
 
         - -1 Black square
         - -2 X
@@ -79,7 +76,6 @@ class Renderer:
         :type matr: np.ndarray
         :rtype: None
         """
-
         # Draw background
         pygame.draw.rect(self.surface, self.bkg_color, self.bkg_rect)
         # Draw field

@@ -1,3 +1,4 @@
+"""Module for translation function."""
 import gettext
 import locale
 

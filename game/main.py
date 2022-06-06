@@ -1,3 +1,4 @@
+"""Main program."""
 import pygame
 import pygame_gui
 import os
@@ -12,7 +13,14 @@ from tr import _
 
 
 class TestApp:
+    """Class that runs program.
+
+    :param window_size: Size of window.
+    :type window_size: Tuple[int]
+    """
+
     def __init__(self, window_size: Tuple[int]):
+        """Initialize."""
         pygame.init()
         pygame.display.set_caption(_("PWN"))
         self.window_size = window_size
@@ -45,6 +53,15 @@ class TestApp:
         self.progress_bar.percent_full = 0
 
     def load_ngram(self, path: str, reload_pages: bool = False, step: int = 60):
+        """Load selected nonogram.
+
+        :param path: Path of the nonogram.
+        :type path: str
+        :param reload_pages: Flag for reloading pages.
+        :type reload_pages: bool
+        :param step: Size of one cell in nonogram.
+        :type step: int
+        """
         self.ngram = Nonogram(path)
         ngram_shape = (self.ngram.current_matr.shape[0] * step,
                        self.ngram.current_matr.shape[1] * step)
@@ -61,6 +78,12 @@ class TestApp:
             self.pages["page2"].buttons[-1] = self.rend
 
     def open_new_page(self, page_link: str) -> None:
+        """Open page.
+
+        :param page_link: Link to the page.
+        :type page_link: str
+        :rtype: None
+        """
         if page_link is None:
             return
         if page_link == "exit":
@@ -89,6 +112,10 @@ class TestApp:
         self.page_display.show_all()
 
     def process_event(self, event):
+        """Process game event.
+
+        :param event: Event.
+        """
         if self.rend.active:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if (cell := self.proc.click(*event.pos)):
@@ -119,6 +146,7 @@ class TestApp:
         return handled
 
     def run(self):
+        """Run program."""
         while self.is_running:
             time_delta = self.clock.tick(60) / 1000.0
             for event in pygame.event.get():
