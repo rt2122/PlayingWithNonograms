@@ -1,3 +1,4 @@
+"""Module with nonogram class controlling the statuses of the cells."""
 import numpy as np
 
 
@@ -7,7 +8,9 @@ class Nonogram:
     :param matr_path: path to matrix to load
     :type matr_path: str
     """
+
     def __init__(self, matr_path: str) -> None:
+        """Initialize."""
         self.correct_matr = np.load(matr_path)
 
         i, j = np.where(self.correct_matr < 0)
@@ -54,7 +57,7 @@ class Nonogram:
         :rtype: bool
         """
         i, j = self.ngram_idx
-        return np.equal(self.current_matr[i:, j:] == -1, self.correct_matr[i:,j:] == -1).all()
+        return np.equal(self.current_matr[i:, j:] == -1, self.correct_matr[i:, j:] == -1).all()
 
     def progress(self) -> float:
         """Get the progress.

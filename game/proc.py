@@ -1,3 +1,4 @@
+"""Module for GameProcessor class."""
 import numpy as np
 from typing import Tuple
 
@@ -15,10 +16,9 @@ class GameProcessor():
     :param step: one cell width
     :type step: int
     """
+
     def __init__(self, matrix: np.ndarray, left: int, top: int, step: int) -> None:
-        """
-        Constructor.
-        """
+        """Initialize."""
         self.matr = matrix.copy()
         self.step = step
         self.left = left

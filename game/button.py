@@ -1,3 +1,4 @@
+"""Module with buttons."""
 import pygame_gui
 import pygame
 
@@ -17,8 +18,10 @@ class MenuButton(pygame_gui.elements.UIButton):
     :param next_page: page to show after this button is pressed
     :type next_page: str
     """
+
     def __init__(self, left: int, top: int, text: str,
                  manager: pygame_gui.UIManager, next_page: str) -> None:
+        """Initialize."""
         super().__init__(relative_rect=pygame.Rect((left, top), (150, 50)),
                          text=text, manager=manager,
                          object_id=pygame_gui.core.ObjectID(class_id='@menu_buttons'))
@@ -42,9 +45,11 @@ class GoButton(pygame_gui.elements.UIButton):
     :param container: Window in which to inside the button.
     :type next_page: pygame_gui.elements.UIWindow
     """
+
     def __init__(self, left: int, top: int, text: str,
                  manager: pygame_gui.UIManager, next_page: str,
                  container: pygame_gui.elements.UIWindow) -> None:
+        """Initialize."""
         super().__init__(relative_rect=pygame.Rect((left, top), (150, 50)),
                          text=text, manager=manager,
                          object_id=pygame_gui.core.ObjectID(class_id='@menu_buttons'),
