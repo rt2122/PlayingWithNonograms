@@ -4,8 +4,8 @@ import os
 import pygame
 import pygame_gui
 from pygame_gui.elements import UIWindow, UIDropDownMenu, UILabel
-from button import GoButton
-from tr import _
+from PlayingWithNonograms.button import GoButton
+from PlayingWithNonograms.tr import _
 
 
 class ChoosingWindow(UIWindow):
@@ -17,14 +17,14 @@ class ChoosingWindow(UIWindow):
     :type ui_manager: pygame_gui.UIManager
     """
 
-    def __init__(self, rect: pygame.Rect, ui_manager: pygame_gui.UIManager) -> None:
+    def __init__(self, rect: pygame.Rect, ui_manager: pygame_gui.UIManager,
+                 ngram_path: str) -> None:
         """Initialize."""
         super().__init__(rect, ui_manager,
                          window_display_title=_("Choose Nonogram"),
                          object_id="#scaling_window",
                          resizable=True)
 
-        ngram_path = "../ngrams"
         files = os.listdir(ngram_path)
         files = list(filter(lambda x: x.endswith(".npy"), files))
 
