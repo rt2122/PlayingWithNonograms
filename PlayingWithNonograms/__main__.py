@@ -3,13 +3,8 @@ import pygame
 import pygame_gui
 import os
 from typing import Tuple
-from proc import GameProcessor
-from render import Renderer
-from screen import Page, ChoosingWindow
-from button import MenuButton
-from ngram import Nonogram
-from progress_bar import GameProgressBar
-from tr import _
+from . import (GameProcessor, Renderer, Page, ChoosingWindow, MenuButton, Nonogram,
+               GameProgressBar, _)
 
 
 class TestApp:
@@ -21,20 +16,23 @@ class TestApp:
 
     def __init__(self, window_size: Tuple[int]):
         """Initialize."""
+
+        module_dir = os.path.dirname(__file__)
+
         pygame.init()
         pygame.display.set_caption(_("PWN"))
         self.window_size = window_size
         self.window_surface = pygame.display.set_mode(window_size)
 
         self.background = pygame.Surface(window_size)
-        self.manager = pygame_gui.UIManager(window_size, "./theme.json")
+        self.manager = pygame_gui.UIManager(window_size, os.path.join(module_dir, "./theme.json"))
         self.background.fill(self.manager.get_theme().get_colour("main", ["background", "colours"]))
 
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-        self.ngram_path = "../ngrams"
-        self.load_ngram("../ngrams/test.npy")
+        self.ngram_path = os.path.join(module_dir, "../ngrams")
+        self.load_ngram(os.path.join(module_dir, "../ngrams/test.npy"))
 
         self.progress_bar = GameProgressBar(pygame.Rect((window_size[0] // 2 - 200, 100),
                                                         (400, 80)), self.manager, None,
@@ -91,7 +89,7 @@ class TestApp:
             return
         if page_link == "choose":
             window_size = (700, 500)
-            w = ChoosingWindow(pygame.Rect((50, 50), window_size), self.manager)
+            w = ChoosingWindow(pygame.Rect((50, 50), window_size), self.manager, self.ngram_path)
             self.page_display.append(w.button_go)
             self.page_display.append(w)
             return
