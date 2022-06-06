@@ -1,6 +1,6 @@
 """Module for GameProgressBar."""
 from pygame_gui.elements import UIProgressBar
-from tr import _
+from PlayingWithNonograms.tr import _
 
 
 class GameProgressBar(UIProgressBar):
