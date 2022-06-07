@@ -1,4 +1,4 @@
 Ngram
 =====
-.. automodule:: game.ngram
+.. automodule:: PlayingWithNonograms.ngram
     :members:

@@ -23,6 +23,47 @@ class Nonogram:
         self.current_matr[self.correct_matr < 0] = -3
         self.size = np.count_nonzero(self.correct_matr == -1)
 
+    def autofill(self, i: int, j: int) -> None:
+        """Autofills cells when they correspond to hints.
+
+        :param i: i index of the cell that changed
+        :type i: int
+        :param j: j index of the cell that changed
+        :type j: int
+        """
+        column = self.current_matr[i, self.y_idx] == -1
+        count = [0]
+        flag = False
+        for v in column:
+            if v:
+                flag = True
+                count[-1] += 1
+            elif flag:
+                flag = False
+                count += [0]
+        if count[-1] == 0:
+            count.pop()
+        hints = list(self.correct_matr[i, :self.ngram_idx[1]][self.correct_matr[i, :self.ngram_idx[1]] > 0])  # noqa E501
+        if hints == count:
+            self.current_matr[i, self.y_idx] = np.where(self.current_matr[i, self.y_idx] != -1,
+                                                        -2, self.current_matr[i, self.y_idx])
+        row = self.current_matr[self.x_idx, j] == -1
+        count = [0]
+        flag = False
+        for v in row:
+            if v:
+                flag = True
+                count[-1] += 1
+            elif flag:
+                flag = False
+                count += [0]
+        if count[-1] == 0:
+            count.pop()
+        hints = list(self.correct_matr[:self.ngram_idx[0], j][self.correct_matr[:self.ngram_idx[0], j] > 0]) # noqa E501
+        if hints == count:
+            self.current_matr[self.x_idx, j] = np.where(self.current_matr[self.x_idx, j] != -1,
+                                                        -2, self.current_matr[self.x_idx, j])
+
     def change_matr(self, i: int, j: int, button: int) -> None:
         """Change cell depending on button.
 
@@ -45,6 +86,7 @@ class Nonogram:
                         self.current_matr[i][j] = -3
                     else:
                         self.current_matr[i][j] = -2
+                self.autofill(i, j)
             else:
                 self.current_matr[i][j] = - self.current_matr[i][j]
 

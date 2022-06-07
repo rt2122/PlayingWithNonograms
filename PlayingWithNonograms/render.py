@@ -16,9 +16,9 @@ class Renderer:
     :param matr_shape: Shape of the nonogram matrix (including hints).
     :type matr_shape: Tuple[int]
     :param manager: Manager (to get colours).
-    :type pygame_gui.UIManager
+    :type manager: pygame_gui.UIManager
     :param ngram_idx: Indexes of left upper corner of nonogram in the matrix.
-    :type Tuple[int]
+    :type ngram_idx: Tuple[int]
     """
 
     def __init__(self, surface: pygame.Surface, bkg_rect: pygame.Rect, matr_shape: Tuple[int],

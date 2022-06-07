@@ -1,4 +1,4 @@
 Render
 ======
-.. automodule:: game.render
+.. automodule:: PlayingWithNonograms.render
     :members:

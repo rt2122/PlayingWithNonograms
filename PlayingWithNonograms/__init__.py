@@ -1,3 +1,5 @@
+"""Main package."""
+
 from PlayingWithNonograms.proc import GameProcessor
 from PlayingWithNonograms.render import Renderer
 from PlayingWithNonograms.screen import Page, ChoosingWindow
