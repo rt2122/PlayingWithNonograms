@@ -36,9 +36,10 @@ class Nonogram:
                 count += [0]
         if count[-1] == 0:
             count.pop()
-        hints = list(self.correct_matr[i, :self.ngram_idx[1]][self.correct_matr[i, :self.ngram_idx[1]] > 0])
+        hints = list(self.correct_matr[i, :self.ngram_idx[1]][self.correct_matr[i, :self.ngram_idx[1]] > 0])  # noqa E501
         if hints == count:
-            self.current_matr[i, self.y_idx] = np.where(self.current_matr[i, self.y_idx] != -1, -2, self.current_matr[i, self.y_idx])
+            self.current_matr[i, self.y_idx] = np.where(self.current_matr[i, self.y_idx] != -1,
+                                                        -2, self.current_matr[i, self.y_idx])
         row = self.current_matr[self.x_idx, j] == -1
         count = [0]
         flag = False
@@ -51,9 +52,10 @@ class Nonogram:
                 count += [0]
         if count[-1] == 0:
             count.pop()
-        hints = list(self.correct_matr[:self.ngram_idx[0], j][self.correct_matr[:self.ngram_idx[0], j] > 0])
+        hints = list(self.correct_matr[:self.ngram_idx[0], j][self.correct_matr[:self.ngram_idx[0], j] > 0]) # noqa E501
         if hints == count:
-            self.current_matr[self.x_idx, j] = np.where(self.current_matr[self.x_idx, j] != -1, -2, self.current_matr[self.x_idx, j])
+            self.current_matr[self.x_idx, j] = np.where(self.current_matr[self.x_idx, j] != -1,
+                                                        -2, self.current_matr[self.x_idx, j])
 
     def change_matr(self, i: int, j: int, button: int) -> None:
         """Change cell depending on button.
