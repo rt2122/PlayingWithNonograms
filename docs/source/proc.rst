@@ -1,4 +1,4 @@
 Proc
 ====
-.. automodule:: game.proc
+.. automodule:: PlayingWithNonograms.proc
     :members:

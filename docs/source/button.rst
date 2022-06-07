@@ -1,4 +1,4 @@
 MenuButton
 ==========
-.. automodule:: game.button
+.. automodule:: PlayingWithNonograms.button
     :members:

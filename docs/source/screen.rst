@@ -1,4 +1,4 @@
 Screen
 ======
-.. automodule:: game.screen
+.. automodule:: PlayingWithNonograms.screen
     :members:
