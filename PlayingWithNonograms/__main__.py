@@ -16,7 +16,6 @@ class TestApp:
 
     def __init__(self, window_size: Tuple[int]):
         """Initialize."""
-
         module_dir = os.path.dirname(__file__)
 
         pygame.init()

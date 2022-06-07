@@ -24,6 +24,13 @@ class Nonogram:
         self.size = np.count_nonzero(self.correct_matr == -1)
 
     def autofill(self, i: int, j: int) -> None:
+        """Autofills cells when they correspond to hints.
+
+        :param i: i index of the cell that changed
+        :type i: int
+        :param j: j index of the cell that changed
+        :type j: int
+        """
         column = self.current_matr[i, self.y_idx] == -1
         count = [0]
         flag = False
