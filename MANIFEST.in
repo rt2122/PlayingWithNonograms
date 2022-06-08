@@ -1,0 +1,5 @@
+recursive-include PlayingWithNonograms/po *.po
+recursive-include docs *
+include PlayingWithNonograms/ngrams/*
+include *.md
+include PlayingWithNonograms/theme.json

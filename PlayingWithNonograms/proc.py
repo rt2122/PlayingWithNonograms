@@ -1,3 +1,4 @@
+"""Module for GameProcessor class."""
 import numpy as np
 from typing import Tuple
 
@@ -15,15 +16,10 @@ class GameProcessor():
     :param step: one cell width
     :type step: int
     """
+
     def __init__(self, matrix: np.ndarray, left: int, top: int, step: int) -> None:
-        """
-        Constructor.
-        """
-        self.matr = matrix
-        i, j = np.where(matrix < 0)
-        i, j = i[0], j[0]
-        self.x_idx = range(i, matrix.shape[0])
-        self.y_idx = range(j, matrix.shape[1])
+        """Initialize."""
+        self.matr = matrix.copy()
         self.step = step
         self.left = left
         self.top = top
@@ -41,31 +37,6 @@ class GameProcessor():
         """
         i = (x - self.left) // self.step
         j = (y - self.top) // self.step
-        if i in self.x_idx and j in self.y_idx:
+        if i in range(self.matr.shape[0]) and j in range(self.matr.shape[1]):
             return i, j
         return None
-
-    def change_cell(self, i: int, j: int, button: int) -> np.ndarray:
-        """
-        Change cell with indices [i][j] based on which mouse button was clicked.
-
-        :param i: i index of the cell to change
-        :type i: int
-        :param j: j index of the cell to change
-        :type j: int
-        :param button: mouse button type
-        :type button: int
-        :return: changed matrix
-        :rtype: nd.array
-        """
-        if button == 1:  # left click
-            if self.matr[i][j] == -1:
-                self.matr[i][j] = -3
-            else:
-                self.matr[i][j] = -1
-        elif button == 3:  # right click
-            if self.matr[i][j] == -2:
-                self.matr[i][j] = -3
-            else:
-                self.matr[i][j] = -2
-        return self.matr
