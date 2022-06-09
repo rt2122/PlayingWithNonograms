@@ -2,17 +2,20 @@ import PlayingWithNonograms.ngram
 import os
 import numpy as np
 
+ngrams_dir = "PlayingWithNonograms/ngrams"
+
 
 def test_init():
-    for file in os.listdir("ngrams"):
+    print(__file__)
+    for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
-            assert PlayingWithNonograms.ngram.Nonogram("ngrams/" + file)
+            assert PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
 
 
 def test_change_matr():
-    for file in os.listdir("ngrams"):
+    for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
-            ng = PlayingWithNonograms.ngram.Nonogram("ngrams/" + file)
+            ng = PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
             matr = ng.current_matr.copy()
             for i in range(0, matr.shape[0]):
                 for j in range(0, matr.shape[1]):
@@ -24,9 +27,9 @@ def test_change_matr():
 
 
 def test_autofill():
-    for file in os.listdir("ngrams"):
+    for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
-            ng = PlayingWithNonograms.ngram.Nonogram("ngrams/" + file)
+            ng = PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
             matr = ng.correct_matr
             ids = np.transpose(np.nonzero(matr == -1))
             for id in ids:
@@ -36,9 +39,9 @@ def test_autofill():
 
 
 def test_check():
-    for file in os.listdir("ngrams"):
+    for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
-            ng = PlayingWithNonograms.ngram.Nonogram("ngrams/" + file)
+            ng = PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
             matr = ng.correct_matr
             ids = np.transpose(np.nonzero(matr == -1))
             for id in ids:
@@ -47,9 +50,9 @@ def test_check():
 
 
 def test_progress():
-    for file in os.listdir("ngrams"):
+    for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
-            ng = PlayingWithNonograms.ngram.Nonogram("ngrams/" + file)
+            ng = PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
             matr = ng.correct_matr
             ids = np.transpose(np.nonzero(matr == -1))
             cnt = 0
