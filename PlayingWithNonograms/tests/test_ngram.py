@@ -6,7 +6,6 @@ ngrams_dir = "PlayingWithNonograms/ngrams"
 
 
 def test_init():
-    print(__file__)
     for file in os.listdir(ngrams_dir):
         if file.endswith(".npy"):
             assert PlayingWithNonograms.ngram.Nonogram(os.path.join(ngrams_dir, file))
