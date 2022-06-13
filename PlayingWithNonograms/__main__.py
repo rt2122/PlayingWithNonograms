@@ -62,11 +62,11 @@ class TestApp:
         self.ngram = Nonogram(path)
         ngram_shape = (self.ngram.current_matr.shape[0] * step,
                        self.ngram.current_matr.shape[1] * step)
-        left = self.window_size[0] // 2 - ngram_shape[0] // 2 - 100
-        top = self.window_size[1] // 2 - ngram_shape[1] // 2 - 100
+        left = self.window_size[0] // 2 - ngram_shape[0] // 2
+        top = self.window_size[1] // 2 - ngram_shape[1] // 2
         self.rend_sf = pygame.Surface(self.window_size)
         self.rend_sf.fill(self.manager.get_theme().get_colour("main", ["background", "colours"]))
-        self.proc = GameProcessor(self.ngram.current_matr, left + 100, top + 100, step)
+        self.proc = GameProcessor(self.ngram.current_matr, left, top, step)
         self.rend = Renderer(self.rend_sf,
                              pygame.Rect(left, top, *ngram_shape),
                              self.ngram.current_matr.shape, self.manager, self.ngram.ngram_idx)
@@ -155,7 +155,7 @@ class TestApp:
 
             self.window_surface.blit(self.background, (0, 0))
             if self.rend.active:
-                self.window_surface.blit(self.rend_sf, (95, 95))
+                self.window_surface.blit(self.rend_sf, (0, 0))
             self.manager.draw_ui(self.window_surface)
             self.rend.render(self.ngram.current_matr)
 
