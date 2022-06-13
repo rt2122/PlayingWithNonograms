@@ -29,7 +29,7 @@ class ChoosingWindow(UIWindow):
         files = list(filter(lambda x: x.endswith(".npy"), files))
 
         current_ngram = files[0]
-        self.drop_down_menu = UIDropDownMenu(files, current_ngram,
+        self.drop_down_menu = UIDropDownMenu([f[:-4] for f in files], current_ngram[:-4],
                                              pygame.Rect((int(self.rect.width / 2),
                                                           int(self.rect.height * 0.3)), (200, 25)),
                                              self.ui_manager, container=self)
