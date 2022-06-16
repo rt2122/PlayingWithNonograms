@@ -30,8 +30,8 @@ class TestApp:
         self.clock = pygame.time.Clock()
         self.is_running = True
 
-        self.ngram_path = os.path.join(module_dir, "./ngrams")
-        self.load_ngram(os.path.join(module_dir, "./ngrams/test.npy"))
+        self.ngram_path = os.path.join(module_dir, "ngrams")
+        self.load_ngram(os.path.join(module_dir, "ngrams/note.npy"))
 
         self.progress_bar = GameProgressBar(pygame.Rect((window_size[0] // 2 - 200, 100),
                                                         (400, 80)), self.manager, None,
@@ -97,7 +97,7 @@ class TestApp:
             w = self.page_display.buttons[-1]
             selected = w.drop_down_menu.selected_option
             w.kill()
-            self.load_ngram(os.path.join(self.ngram_path, selected), True)
+            self.load_ngram(os.path.join(self.ngram_path, selected + '.npy'), True)
 
         if page_link == "page1":
             self.progress_bar.win = False
